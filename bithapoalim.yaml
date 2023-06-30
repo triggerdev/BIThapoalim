@@ -1,0 +1,86 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: BIT hapoalim
+  description: Transaction example
+servers:
+  - url: https://tag.trigger.services/api/mambu/
+paths:
+  /v1/sendMoney:
+    post:
+      summary: Send money v1
+      description: Send money from payer to beneficiary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/sendMoney-version-1"
+      responses:
+        200:
+          description: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sendMoney-response"
+  /v2/sendMoney:
+    post:
+      summary: Send money v1
+      description: Send money from payer to beneficiary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/sendMoney-version-2"
+      responses:
+        200:
+          description: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/sendMoney-response"                  
+         
+components:
+  schemas:
+    sendMoney:
+      type: object
+      required:
+        - beneficiaryPhone
+        - payerAccountId
+        - payerId
+        - amount
+      properties:
+        beneficiaryPhone:
+          type: string
+        payerAccountId:
+          type: string
+        payerId:
+          type: string
+        amount:
+          type: number
+        reason:
+          type: string
+    sendMoney-version-1:
+      $ref: "#/components/schemas/sendMoney"
+    sendMoney-version-2:
+      allOf:
+        - $ref: "#/components/schemas/sendMoney"
+        - type: object
+          required:
+            - payerPhone
+          properties:
+            payerPhone:
+              type: string
+    sendMoney-response:
+      type: object
+      properties:
+        code: 
+          type: string
+        confirmTransactionUrl:
+          type: string
+        externalId:
+          type: string
+        status:
+          type: string
+    
+        
+            
